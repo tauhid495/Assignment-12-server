@@ -141,7 +141,7 @@ async function run() {
 
 
         app.get('/product', async (req, res) => {
-            const products = await productCollection.find().toArray();
+            const products = await productCollection.find().sort({ _id: -1 }).toArray();
             res.send(products);
         })
 
@@ -186,12 +186,12 @@ async function run() {
         })
 
         app.get('/review', async (req, res) => {
-            const review = await reviewCollection.find().toArray();
+            const review = await reviewCollection.find().sort({ _id: -1 }).toArray();
             res.send(review);
         })
 
 
-        app.get('/profile/:email', verifyJWT, async (req, res) => {
+        app.get('/profile', async (req, res) => {
             const email = req.query.email;
             const query = { email: email };
             const cursor = profileCollection.find(query);
@@ -200,7 +200,7 @@ async function run() {
         })
 
 
-        app.post('/profile', verifyJWT, async (req, res) => {
+        app.post('/profile', async (req, res) => {
             const profile = req.body;
             const result = await profileCollection.insertOne(profile);
             res.send(result);
